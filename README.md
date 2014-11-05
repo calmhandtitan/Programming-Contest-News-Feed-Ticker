@@ -5,3 +5,5 @@ Uses web scraping to fetch news about upcoming programming contests on various s
 
 To run the program, execute the following command:
 > python codechef.py
+
+> python codeforces.py
