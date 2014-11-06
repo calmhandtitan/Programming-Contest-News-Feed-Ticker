@@ -1,7 +1,7 @@
 Programming-Contest-News-Feed-Ticker
 ====================================
 
-###OverView
+###Overview
 Uses web scraping to fetch news about upcoming programming contests on various sites like Codechef, Codeforces.
 
 ###Execution
