@@ -19,9 +19,14 @@ class CodeChef(object):
 		opener = urllib2.build_opener(proxy_support)
 		urllib2.install_opener(opener)
 		try:
+			print 'Requesting connection to Codechef.com ...'
 			req = urllib2.Request(self.contest_url)
+			print 'Connected to Codechef.com !!'
 			response = urllib2.urlopen(req)
+			print 'Parsing Codechef contests page.'
+			print 'This may take a while. Please be patient..'
 			self.data = response.read()
+			print 'Parsing done!!'
 		except urllib2.HTTPError as e:
 			print e.reason
 
@@ -30,6 +35,7 @@ class CodeChef(object):
 			searches the raw data of codechef.com/contest page
 			for upcoming contests and adds them to multiList
 		'''
+		print 'Searching for any upcoming contests... '
 		start_link = self.data.find('Future Contests')
 		end_link = self.data.find('Past Contests')
 		z = self.data[start_link:end_link]
@@ -80,12 +86,16 @@ class CodeChef(object):
 			reads the contest info from multiset and
 			writes them to file
 		'''
+		newContest = False
 		n = len(self.multiList)
 		for i in range(n):
 			if len(self.multiList[i][0]) != 0:
 				s = 'Codechef is hosting ' + self.multiList[i][0]+' from ' + self.multiList[i][1]
 				s = s +' to ' + self.multiList[i][2]+' Goto: ' + self.multiList[i][3]
 				self.write_file(s, self.filename)
+				newContest = True
+		if not newContest:
+			print 'No new upcoming Codechef contest.'
 
 
 	def write_file(self, s, filename):
@@ -93,13 +103,10 @@ class CodeChef(object):
 			writes string s to file with given
 			filename is string is already not present in that file
 		'''
-		added = False
 		with open(filename, "a+") as file:
 			if (s+"\n") not in file:
 				print >> file, s
-				added = True
-		if added:
-                        print 'A new Codechef contest has been added to the file.'
+		print s
 		file.close()
 
 
