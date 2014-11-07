@@ -82,9 +82,10 @@ class CodeChef(object):
 		'''
 		n = len(self.multiList)
 		for i in range(n):
-			s = 'Codechef is hosting ' + self.multiList[i][0]+' from ' + self.multiList[i][1]
-			s = s +' to ' + self.multiList[i][2]+' Goto: ' + self.multiList[i][3]
-			self.write_file(s, self.filename)
+			if len(self.multiList[i][0]) != 0:
+				s = 'Codechef is hosting ' + self.multiList[i][0]+' from ' + self.multiList[i][1]
+				s = s +' to ' + self.multiList[i][2]+' Goto: ' + self.multiList[i][3]
+				self.write_file(s, self.filename)
 
 
 	def write_file(self, s, filename):
