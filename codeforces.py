@@ -20,9 +20,14 @@ class CodeForces(object):
 		opener = urllib2.build_opener(proxy_support)
 		urllib2.install_opener(opener)
 		try:
+			print 'Requesting connection to Codeforces.com ...'
 			req = urllib2.Request(self.contest_url)
+			print 'Connected to Codeforces.com !!'
 			response = urllib2.urlopen(req)
+			print 'Parsing Codeforces contests page.'
+			print 'This may take a while. Please be patient..'
 			self.data = response.read()
+			print 'Parsing done!!'
 		except urllib2.HTTPError as e:
 			print e.reason
 
@@ -31,6 +36,7 @@ class CodeForces(object):
 			searches the raw data of codeforces.com/contest page
 			for upcoming contests and adds them to multiList
 		'''
+		print 'Searching for any upcoming contests... '
 		start_link = self.data.find('Current or upcoming contests')
 		end_link = self.data.find('Contest history')
 		z = self.data[start_link:end_link]
@@ -64,12 +70,17 @@ class CodeForces(object):
 			reads the contest info from multiset and
 			writes them to file
 		'''
+		newContest = False
 		n = len(self.multiList)
 		for i in range(n):
-			s = 'CodeForces is hosting ' + self.multiList[i][0]+ ' of Duration ' + self.multiList[i][2] 
-			self.multiList[i][1] = self.correct_timezone(self.multiList[i][1])
-			s = s + ' on ' + self.multiList[i][1] + ' (IST)'
-			self.write_file(s, self.filename)
+			if len(self.multiList[i][0]) != 0:			
+				s = 'CodeForces is hosting ' + self.multiList[i][0]+ ' of Duration ' + self.multiList[i][2] 
+				self.multiList[i][1] = self.correct_timezone(self.multiList[i][1])
+				s = s + ' on ' + self.multiList[i][1] + ' (IST)'
+				self.write_file(s, self.filename)
+				newContest = True
+		if not newContest:
+			print 'No new upcoming CodeForces contest.'
 
 	def correct_timezone(self, s):
 		'''
@@ -94,13 +105,10 @@ class CodeForces(object):
 			writes string s to file with given
 			filename is string is already not present in that file
 		'''
-		added = False
 		with open(filename, "a+") as file:
 			if (s+"\n") not in file:
 				print >> file, s
-				added = True
-		if added:
-                        print 'A new Codeforces contest has been added to the file.'
+		print s
 		file.close()
 
 
