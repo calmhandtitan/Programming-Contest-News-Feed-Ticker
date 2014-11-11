@@ -16,7 +16,7 @@ class CodeForces(object):
 			parses codeforces.com/contest page
 			Avoid the next 4 lines, if you aren't using a proxy server
 		'''
-		proxy_url = "http://2012009:71131710@172.27.16.8:3128"
+		proxy_url = "http://username:password@host:port"
 		proxy_support = urllib2.ProxyHandler({'http' : proxy_url})
 		opener = urllib2.build_opener(proxy_support)
 		urllib2.install_opener(opener)
