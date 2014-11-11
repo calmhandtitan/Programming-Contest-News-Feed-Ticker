@@ -1,5 +1,6 @@
 from datetime import *
 from time import strptime
+from bcolors import *
 
 class CheckFile(object):
 
@@ -50,9 +51,9 @@ class CheckFile(object):
 	'''
 	def reportEndOfCodechefContest(self, contest):
 		startIdx = contest.find('hosting')
-		endIdx = contest[startIdx+7:].find('from') + startIdx + 1
-		contestName = contest[startIdx+8 : endIdx]
-		print 'Codechef contest ' + contestName + ' has ended.'
+		endIdx = contest.find('from')
+		contestName = contest[startIdx+8 : endIdx].strip()
+		print bColors.WARNING + 'Codechef contest ' + contestName + ' has ended.' + bColors.ENDC
 
 	'''
 		this function returns
@@ -76,7 +77,7 @@ class CheckFile(object):
 		startIdx = contest.find('hosting')
 		endIdx = contest.find('of')
 		contestName = contest[startIdx+7 : endIdx].strip()
-		print 'Codeforces contest ' + contestName + ' has ended.'
+		print bColors.WARNING + 'Codeforces contest ' + contestName + ' has ended.' + bColors.ENDC
 
 	'''
 		this function returns
