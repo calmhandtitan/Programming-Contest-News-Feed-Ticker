@@ -1,4 +1,5 @@
 import urllib2
+from bcolors import *
 
 class CodeForces(object):
 	def __init__(self):
@@ -15,7 +16,7 @@ class CodeForces(object):
 			parses codeforces.com/contest page
 			Avoid the next 4 lines, if you aren't using a proxy server
 		'''
-		proxy_url = "http://username:password@host:port"
+		proxy_url = "http://2012009:71131710@172.27.16.8:3128"
 		proxy_support = urllib2.ProxyHandler({'http' : proxy_url})
 		opener = urllib2.build_opener(proxy_support)
 		urllib2.install_opener(opener)
@@ -29,7 +30,7 @@ class CodeForces(object):
 			self.data = response.read()
 			print 'Parsing done!!'
 		except urllib2.HTTPError as e:
-			print e.reason
+			print bColors.FAIL + e.reason + bColors.ENDC
 
 	def find_future_contests(self):
 		'''
@@ -80,7 +81,7 @@ class CodeForces(object):
 				self.write_file(s, self.filename)
 				newContest = True
 		if not newContest:
-			print 'No new upcoming CodeForces contest.'
+			print bColors.OKBLUE + 'No new upcoming Codeforces contest.' + bColors.ENDC
 
 	def correct_timezone(self, s):
 		'''
@@ -108,7 +109,7 @@ class CodeForces(object):
 		with open(filename, "a+") as file:
 			if (s+"\n") not in file:
 				print >> file, s
-		print s
+		print bColors.OKGREEN + s + bColors.ENDC
 		file.close()
 
 
