@@ -16,3 +16,7 @@ To execute the program, execute the command:
 
 > python main.py
 
+####Here's a sample screenshot taken on Feb 20, 2015
+
+![Alt text](/screenshot_20Feb2015.png "Sample Screenshot")
+
