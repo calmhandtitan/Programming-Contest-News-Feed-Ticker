@@ -14,7 +14,7 @@ The program fetches data about upcoming programming contests from codechef.com a
 
 To execute the program, execute the command:
 
-> python main.py
+> $ python main.py
 
 ####Here's a sample screenshot taken on Feb 20, 2015
 
