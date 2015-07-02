@@ -2,24 +2,25 @@ import urllib2
 from bcolors import *
 
 class CodeChef(object):
-	def __init__(self):
+	def __init__(self, proxyConfig):
 		self.contest_url = 'http://www.codechef.com/contests/'
 		self.filename = 'news.txt'
 		self.data = ''	
 		self.multiList = []
-		if self.parse_page():
+		if self.parse_page(proxyConfig):
 			self.find_future_contests()
 			self.write_contests()
-	def parse_page(self):
+	def parse_page(self, proxyConfig):
 		'''
 			parses codechef.com/contest page
 			Avoid the next 4 lines if you aren't using a proxy server
 		'''
 		try:
-			proxy_url = "http://username:password@host:port"
-			proxy_support = urllib2.ProxyHandler({'http' : proxy_url})
-			opener = urllib2.build_opener(proxy_support)
-			urllib2.install_opener(opener)
+			if len(proxyConfig):
+				proxy_url = proxyConfig
+				proxy_support = urllib2.ProxyHandler({'http' : proxy_url})
+				opener = urllib2.build_opener(proxy_support)
+				urllib2.install_opener(opener)
 
 			print "\n\n" + 'Requesting connection to Codechef.com ...'
 			req = urllib2.Request(self.contest_url)
