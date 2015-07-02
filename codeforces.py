@@ -7,30 +7,35 @@ class CodeForces(object):
 		self.filename = 'news.txt'
 		self.data = ''	
 		self.multiList = []
-		self.parse_page()
-		self.find_future_contests()
-		self.write_contests()
+		if self.parse_page():
+			self.find_future_contests()
+			self.write_contests()
 
 	def parse_page(self):
 		'''
 			parses codeforces.com/contest page
 			Avoid the next 4 lines, if you aren't using a proxy server
 		'''
-		proxy_url = "http://username:password@host:port"
-		proxy_support = urllib2.ProxyHandler({'http' : proxy_url})
-		opener = urllib2.build_opener(proxy_support)
-		urllib2.install_opener(opener)
 		try:
-			print 'Requesting connection to Codeforces.com ...'
+			proxy_url = "http://username:password@host:port"
+			proxy_support = urllib2.ProxyHandler({'http' : proxy_url})
+			opener = urllib2.build_opener(proxy_support)
+			urllib2.install_opener(opener)
+			print "\n\n" + 'Requesting connection to Codeforces.com ...'
 			req = urllib2.Request(self.contest_url)
-			print 'Connected to Codeforces.com !!'
 			response = urllib2.urlopen(req)
+			print bColors.HEADER + 'Connected to Codeforces.com !!' + bColors.ENDC			
 			print 'Parsing Codeforces contests page.'
 			print 'This may take a while. Please be patient..'
 			self.data = response.read()
 			print 'Parsing done!!'
+			return 1
 		except urllib2.HTTPError as e:
 			print bColors.FAIL + e.reason + bColors.ENDC
+		except urllib2.httplib.InvalidURL as e:
+			print bColors.FAIL + "Invalid Proxy Configuration" + bColors.ENDC
+			return 0
+	
 
 	def find_future_contests(self):
 		'''
