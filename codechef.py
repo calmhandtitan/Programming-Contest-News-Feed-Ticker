@@ -7,29 +7,34 @@ class CodeChef(object):
 		self.filename = 'news.txt'
 		self.data = ''	
 		self.multiList = []
-		self.parse_page()
-		self.find_future_contests()
-		self.write_contests()
+		if self.parse_page():
+			self.find_future_contests()
+			self.write_contests()
 	def parse_page(self):
 		'''
 			parses codechef.com/contest page
 			Avoid the next 4 lines if you aren't using a proxy server
 		'''
-		proxy_url = "http://username:password@host:port"
-		proxy_support = urllib2.ProxyHandler({'http' : proxy_url})
-		opener = urllib2.build_opener(proxy_support)
-		urllib2.install_opener(opener)
 		try:
-			print 'Requesting connection to Codechef.com ...'
+			proxy_url = "http://username:password@host:port"
+			proxy_support = urllib2.ProxyHandler({'http' : proxy_url})
+			opener = urllib2.build_opener(proxy_support)
+			urllib2.install_opener(opener)
+
+			print "\n\n" + 'Requesting connection to Codechef.com ...'
 			req = urllib2.Request(self.contest_url)
-			print 'Connected to Codechef.com !!'
 			response = urllib2.urlopen(req)
+			print bColors.HEADER + 'Connected to Codechef.com !!' + bColors.ENDC
 			print 'Parsing Codechef contests page.'
 			print 'This may take a while. Please be patient..'
 			self.data = response.read()
 			print 'Parsing done!!'
+			return 1
 		except urllib2.HTTPError as e:
 			print bColors.FAIL + e.reason + bColors.ENDC
+		except urllib2.httplib.InvalidURL as e:
+			print bColors.FAIL + "Invalid Proxy Configuration" + bColors.ENDC
+			return 0
 
 	def find_future_contests(self):
 		'''
@@ -43,7 +48,7 @@ class CodeChef(object):
 		start_link = z.find('</tr>')
 		z = z[start_link+5:]
 		while 1:
-			start_link = z.find('<tr >')
+			start_link = z.find('<tr>')
 			end_link = z.find('</tr>')
 			if start_link == -1 and end_link == -1:
 				break
@@ -61,22 +66,22 @@ class CodeChef(object):
 			list[3] is the contest Code	
 		'''
 		List = []
-		start = s.find('<td >')
+		start = s.find('<td>')
 		end = s.find('</td>')
-		contest_code = str(s[start+5:end])
+		contest_code = str(s[start+4:end])
 		s = s[end:]
 		start = s.find('">')
 		end = s.find('</a>')
 		List.append(str(s[start+2:end]))	#append the contest name
 		s = s[end:]
-		start = s.find('<td >')
-		s = s[start:]
+		start = s.find('">')
+		s = s[start+2:]
 		end = s.find('</td>')
-		List.append(str(s[5:end]))		#append the startDate & startTime
+		List.append(str(s[:end]))		#append the startDate & startTime
 		s = s[end+5:]
-		start = s.find('<td >')
+		start = s.find('">')
 		end = s.find('</td>')
-		List.append(str(s[start+5:end]))	#append the endDate & endTime
+		List.append(str(s[start+2:end]))	#append the endDate & endTime
 		s = s[end:]
 		List.append(self.contest_url+contest_code)	#append the contest Code
 		return List
@@ -107,7 +112,7 @@ class CodeChef(object):
 		with open(filename, "a+") as file:
 			if (s+"\n") not in file:
 				print >> file, s
-		print bColors.OKGREEN + s + bColors.ENDC
+		print "\n" + bColors.OKGREEN + s + bColors.ENDC
 		file.close()
 
 
